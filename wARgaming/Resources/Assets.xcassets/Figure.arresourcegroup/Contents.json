@@ -5,7 +5,13 @@
   },
   "resources" : [
     {
-      "filename" : "Scan_06-51-53.arobject"
+      "filename" : "Funko_new.arobject"
+    },
+    {
+      "filename" : "LemanRuss.arobject"
+    },
+    {
+      "filename" : "ScanOld.arobject"
     }
   ]
 }
