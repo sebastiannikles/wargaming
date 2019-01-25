@@ -14,7 +14,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     
-    var character: Character?
+    var firstCharacter: Character?
+    var secondCharacter: Character?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        sceneView.debugOptions = SCNDebugOptions.showBoundingBoxes
         
         // Create a new scene
         let scene = SCNScene(named: "SceneKit.scnassets/GameScene.scn")!
@@ -56,32 +58,47 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if(touch.view == self.sceneView) {
             let viewTouchLocation:CGPoint = touch.location(in: sceneView)
             guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
-                character?.hideMoveRadius()
+                firstCharacter?.hideMoveRadius()
                 return
             }
             
             var n:SCNNode? = result.node
 
-            while n != character && n != nil {
+            while n != firstCharacter && n != nil {
                 n = n?.parent
             }
 
-            if n == character {
-                character?.showMoveRadius()
+            if n == firstCharacter {
+                firstCharacter?.showMoveRadius()
             } else {
-                character?.hideMoveRadius()
+                firstCharacter?.hideMoveRadius()
             }
         }
     }
     
     // MARK: - ARSCNViewDelegate
     
+    var shouldRemoveFirstNodes = true
+    
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        // TEMPORARY FIX FOR ADDITIONAL NODES
-        sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
-        sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
+        if (shouldRemoveFirstNodes) {
+            // TEMPORARY FIX FOR ADDITIONAL NODES
+            sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
+            sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
+            
+            shouldRemoveFirstNodes = false
+        }
         
-        character = Character.create(from: anchor as? ARObjectAnchor)
-        return character
+        if firstCharacter == nil {
+            firstCharacter = Character.create(from: anchor as? ARObjectAnchor)
+            return firstCharacter
+        }
+        
+        if secondCharacter == nil {
+            secondCharacter = Character.create(from: anchor as? ARObjectAnchor)
+            return secondCharacter
+        }
+        
+        return nil
     }
 }
