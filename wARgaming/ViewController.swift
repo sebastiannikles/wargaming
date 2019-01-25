@@ -59,21 +59,33 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let viewTouchLocation:CGPoint = touch.location(in: sceneView)
             guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
                 firstCharacter?.hideMoveRadius()
+                secondCharacter?.hideMoveRadius()
                 return
             }
             
-            var n:SCNNode? = result.node
+            var char: Character?
 
-            while n != firstCharacter && n != nil {
-                n = n?.parent
-            }
-
-            if n == firstCharacter {
-                firstCharacter?.showMoveRadius()
+            if isCharacter(node: result.node, char: &char) {
+                char?.showMoveRadius()
             } else {
                 firstCharacter?.hideMoveRadius()
+                secondCharacter?.hideMoveRadius()
             }
         }
+    }
+    
+    func isCharacter(node: SCNNode?, char: inout Character?) -> Bool {
+        var node = node
+        while !(node is Character) && node != nil {
+            node = node?.parent
+        }
+        
+        if node is Character {
+            char = node as? Character
+            return true
+        }
+        
+        return false
     }
     
     // MARK: - ARSCNViewDelegate
