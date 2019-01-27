@@ -130,29 +130,61 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     // MARK: - Touch Handling
     
+    var attackTarget: Character?
+    var attackingNode: Character?
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard currentPhase != .Selection && currentMovedNode == nil else { return }
+        guard currentPhase != .Selection else { return }
+        
+        let shouldIgnore = currentPhase == .Movement && currentMovedNode != nil
+        
+        guard !shouldIgnore else { return }
         
         let touch = touches.first as! UITouch
-        if(touch.view == self.sceneView) {
-            let viewTouchLocation:CGPoint = touch.location(in: sceneView)
-            guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
-                hideMoveRadius()
+        if(touch.view != self.sceneView) {
+            return
+        }
+
+        let viewTouchLocation:CGPoint = touch.location(in: sceneView)
+        guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
+            return
+        }
+        
+        var char: Character?
+        if !isCharacter(node: result.node, char: &char) {
+            return
+        }
+
+        if currentPhase == .Movement {
+            let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
+            if !isRightTurn {
                 return
             }
             
-            var char: Character?
-            if isCharacter(node: result.node, char: &char) {
-                let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
-                if !isRightTurn {
-                    hideMoveRadius()
-                    return
-                }
-                
-                showMoveRadius(at: char)
-            } else {
-                hideMoveRadius()
+            showMoveRadius(at: char)
+            hideHint()
+            
+            return
+        }
+        
+        if attackingNode == nil {
+            let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
+            if !isRightTurn {
+                return
             }
+            
+            showMoveRadius(at: char)
+            attackingNode = char
+            updateHint()
+        } else {
+            let isRightTarget = (char == firstCharacter && isPlayer2()) || (char == secondCharacter && isPlayer1())
+            if !isRightTarget {
+                return
+            }
+            
+            attackTarget = char
+            // TODO: Show dice view here if in range
+            print("Target selected")
         }
     }
     
@@ -236,8 +268,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func showMoveRadius(at character: Character?) {
         guard let character = character else { return }
-        
-        hideHint()
         
         movementNode.position = character.position
         currentMovementRadius = character.movementRadius
@@ -394,6 +424,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             hint = "Choose your character by looking at it"
         } else if currentPhase == .Movement {
             hint = "Tap the character you want to move"
+        } else {
+            hint = attackingNode != nil ? "Tap the character you want to attack" : "Tap the character you want to attack with"
         }
         
         DispatchQueue.main.async {
@@ -408,6 +440,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             phase = "Selection"
         } else if currentPhase == .Movement {
             phase = "Movement"
+        } else {
+            phase = "Attack"
         }
         
         DispatchQueue.main.async {
