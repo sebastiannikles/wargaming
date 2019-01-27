@@ -40,7 +40,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var currentPhase: TurnPhase! {
         didSet {
             updatePhaseText()
-            updateHintText()
         }
     }
     
@@ -73,7 +72,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         setUpPlayerView()
         
         currentPlayer = 0
-        currentPhase = .Selection
+        changePhase(to: .Selection, animated: false)
+        updateHint(animated: false)
     }
     
     func setUpHintView() {
@@ -173,6 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if firstCharacter == nil {
             firstCharacter = Character.create(from: anchor as? ARObjectAnchor)
             currentPlayer = 1
+            updateHint()
             
             return firstCharacter
         }
@@ -181,7 +182,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             secondCharacter = Character.create(from: anchor as? ARObjectAnchor)
             
             currentPlayer = 0
-            currentPhase = .Movement
+            changePhase(to: .Movement)
             
             return secondCharacter
         }
@@ -191,11 +192,64 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - Game Info Helpers
     
+    func changePhase(to phase: TurnPhase, animated: Bool = true) {
+        guard animated else {
+            currentPhase = phase
+            return
+        }
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.hintViewTop.constant = -self.phaseView.frame.height
+                self.hintView.alpha = 0.0
+                self.phaseView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            }, completion: {finished in
+                self.currentPhase = phase
+                self.updateHint(animated: false)
+                UIView.animate(withDuration: 0.7, animations: {
+                    self.hintView.alpha = 1.0
+                    self.phaseView.alpha = 1.0
+                    self.hintViewTop.constant = 16
+                    self.view.layoutIfNeeded()
+                })
+            })
+        }
+    }
+    
+    func updateHint(animated: Bool = true) {
+        guard animated else {
+            updateHintText()
+            return
+        }
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.hintViewTop.constant = -self.phaseView.frame.height
+                self.hintView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            }, completion: {finished in
+                self.updateHintText()
+                UIView.animate(withDuration: 0.7, animations: {
+                    self.hintView.alpha = 1.0
+                    self.hintViewTop.constant = 16
+                    self.view.layoutIfNeeded()
+                })
+            })
+        }
+    }
+    
     func updateHintText() {
+        var hint: String!
+        
         if currentPhase == .Selection {
-            DispatchQueue.main.async {
-                self.hintLabel.text = "Choose your character by looking at it"
-            }
+            hint = "Choose your character by looking at it"
+        } else if currentPhase == .Movement {
+            hint = "Whoops"
+        }
+        
+        DispatchQueue.main.async {
+            self.hintLabel.text = hint
         }
     }
     
@@ -204,6 +258,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if currentPhase == .Selection {
             phase = "Selection"
+        } else if currentPhase == .Movement {
+            phase = "Movement"
         }
         
         DispatchQueue.main.async {
