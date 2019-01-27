@@ -12,6 +12,9 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
+    @IBOutlet weak var victoryView: UIVisualEffectView!
+    @IBOutlet weak var victoryLabel: UILabel!
+    
     @IBOutlet weak var changePhaseView: UIVisualEffectView!
     @IBOutlet weak var changePhaseButton: UIButton!
     @IBOutlet weak var phaseViewTop: NSLayoutConstraint!
@@ -145,7 +148,28 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func showAttackView() {
         guard let attacker = attackingNode, let defender = attackTarget else { return }
         
-        attackView.setUp(attacker, defender)
+        attackView.setUp(attacker, defender, completion: {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.35, animations: {
+                    self.attackViewHeight.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: {finished in
+                    self.attackView.phase = .HitRoll
+                    
+                    if defender.wounds <= 0 {
+                        self.hideHint()
+                        self.hidePhase()
+                        self.hideChangePhase()
+                        
+                        self.showVictoryView()
+                    } else {
+                        self.canSwitchPhase = true
+                        self.changePhase(self)
+                    }
+                })
+            }
+        })
+        
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.35, animations: {
                 self.attackViewHeight.constant = 300
@@ -474,6 +498,35 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             UIView.animate(withDuration: 0.7, animations: {
                 self.hintViewTop.constant = -self.phaseView.frame.height
                 self.hintView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func hidePhase() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.phaseView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func hideChangePhase() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.changePhaseView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func showVictoryView() {
+        victoryLabel.text = "Congratulations!\n\n\(isPlayer1() ? "Player 1" : "Player 2") wins the game!"
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.victoryView.alpha = 1.0
                 self.view.layoutIfNeeded()
             })
         }
