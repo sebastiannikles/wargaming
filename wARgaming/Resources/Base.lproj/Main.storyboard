@@ -21,17 +21,45 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdO-ch-gYq">
+                                <rect key="frame" x="150.5" y="36" width="74" height="36.5"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0jO-ZW-hPM">
+                                    <rect key="frame" x="0.0" y="0.0" width="74" height="36"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-4r-Nwj">
+                                            <rect key="frame" x="16" y="8" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.72989908854166663" green="0.72989908854166663" blue="0.72989908854166663" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="6rM-4r-Nwj" secondAttribute="trailing" constant="16" id="Ekk-Nn-26N"/>
+                                        <constraint firstItem="6rM-4r-Nwj" firstAttribute="leading" secondItem="0jO-ZW-hPM" secondAttribute="leading" constant="16" id="ROP-Q5-Qat"/>
+                                        <constraint firstAttribute="bottom" secondItem="6rM-4r-Nwj" secondAttribute="bottom" constant="8" id="SLY-kN-1Kl"/>
+                                        <constraint firstItem="6rM-4r-Nwj" firstAttribute="centerY" secondItem="0jO-ZW-hPM" secondAttribute="centerY" id="XRy-CM-hah"/>
+                                        <constraint firstItem="6rM-4r-Nwj" firstAttribute="top" secondItem="0jO-ZW-hPM" secondAttribute="top" constant="8" id="xz9-fV-Fw2"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="TdO-ch-gYq" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="8kz-ci-esx"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="TdO-ch-gYq" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="pWA-rG-UUF"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="hintLabel" destination="6rM-4r-Nwj" id="ez2-QK-bal"/>
+                        <outlet property="hintView" destination="TdO-ch-gYq" id="yWf-2q-fhZ"/>
+                        <outlet property="hintViewTop" destination="8kz-ci-esx" id="bbW-g3-0qI"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="j5z-Cw-W0V"/>
                     </connections>
                 </viewController>
