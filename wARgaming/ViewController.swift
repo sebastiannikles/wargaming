@@ -12,6 +12,8 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
+    @IBOutlet weak var changePhaseView: UIVisualEffectView!
+    @IBOutlet weak var changePhaseButton: UIButton!
     @IBOutlet weak var phaseViewTop: NSLayoutConstraint!
     @IBOutlet weak var phaseLabel: UILabel!
     @IBOutlet weak var phaseView: UIVisualEffectView!
@@ -69,6 +71,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         setUpHintView()
         setUpPhaseView()
+        setUpChangePhaseView()
         setUpPlayerView()
         
         currentPlayer = 0
@@ -88,6 +91,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         phaseView.layer.borderWidth = 1
         phaseView.layer.borderColor = hintLabel.textColor.cgColor
         phaseView.clipsToBounds = true
+    }
+    
+    func setUpChangePhaseView() {
+        changePhaseView.layer.cornerRadius = changePhaseView.frame.width / 2
+        changePhaseView.layer.borderWidth = 1
+        changePhaseView.layer.borderColor = hintLabel.textColor.cgColor
+        changePhaseView.clipsToBounds = true
+        
+        changePhaseView.alpha = 0.0
     }
     
     func setUpPlayerView() {
@@ -188,6 +200,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             currentPlayer = 0
             changePhase(to: .Movement)
+            canSwitchPhase = true
             
             return secondCharacter
         }
@@ -268,11 +281,36 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         isInRange = !isInRange
+        canSwitchPhase = isInRange
+        
         UIView.animate(withDuration: 0.35, animations: {
             self.movementNode.geometry?.firstMaterial?.diffuse.contents = self.isInRange
                 ? self.defaultCircleColor
                 : self.outOfRangeCircleColor
         })
+    }
+    
+    // MARK: - Switch Phase Action
+    
+    var canSwitchPhase = false
+    
+    @IBAction func changePhase(_ sender: Any) {
+        guard canSwitchPhase else {
+            shakeAnimation()
+            return
+        }
+        
+    }
+    
+    func shakeAnimation() {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.1
+        animation.repeatCount = 2
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: changePhaseView.center.x - 10, y: changePhaseView.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: changePhaseView.center.x + 10, y: changePhaseView.center.y))
+        
+        changePhaseView.layer.add(animation, forKey: "position")
     }
     
     // MARK: - Game Info Helpers
@@ -296,6 +334,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.hintView.alpha = 1.0
                     self.phaseView.alpha = 1.0
                     self.hintViewTop.constant = 16
+                    self.changePhaseView.alpha = 1.0
+                    
                     self.view.layoutIfNeeded()
                 })
             })
