@@ -42,7 +42,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zg1-9D-uVC">
                     <rect key="frame" x="179" y="16" width="17" height="23"/>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" red="0.72989908849999996" green="0.72989908849999996" blue="0.72989908849999996" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Lord of Contagion" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9LC-Ie-gRJ">
@@ -166,8 +166,21 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZIq-qe-Ft2">
-                    <rect key="frame" x="32" y="605" width="323" height="30"/>
-                    <state key="normal" title="Hit Roll"/>
+                    <rect key="frame" x="163" y="605" width="49" height="30"/>
+                    <state key="normal" title="Hit Roll">
+                        <color key="titleColor" red="0.72989908849999996" green="0.72989908849999996" blue="0.72989908849999996" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="6"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                            <color key="value" red="0.72989908849999996" green="0.72989908849999996" blue="0.72989908849999996" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="roll:" destination="-1" eventType="touchUpInside" id="6Ja-qf-SAR"/>
                     </connections>
@@ -179,6 +192,7 @@
                 <constraint firstItem="ZIq-qe-Ft2" firstAttribute="top" secondItem="A3e-SG-Zbl" secondAttribute="bottom" constant="16" id="1BS-n1-c2q"/>
                 <constraint firstItem="Owq-ka-AHw" firstAttribute="leading" secondItem="kAW-jw-kv2" secondAttribute="leading" id="1C0-iR-UKB"/>
                 <constraint firstItem="kCs-UP-zkQ" firstAttribute="bottom" secondItem="Owq-ka-AHw" secondAttribute="bottom" id="1We-Pg-oSH"/>
+                <constraint firstItem="ZIq-qe-Ft2" firstAttribute="centerX" secondItem="W6W-bz-ki0" secondAttribute="centerX" id="1Wp-yP-bne"/>
                 <constraint firstItem="QjT-4A-mc2" firstAttribute="top" secondItem="DMa-7K-wMc" secondAttribute="bottom" constant="12" id="2g1-V8-xly"/>
                 <constraint firstItem="bSd-ww-0gj" firstAttribute="leading" secondItem="DMa-7K-wMc" secondAttribute="trailing" constant="16" id="3xj-w5-3xe"/>
                 <constraint firstItem="5p2-SU-LNZ" firstAttribute="leading" secondItem="59k-8e-2dJ" secondAttribute="leading" id="4Tz-oe-Fda"/>
@@ -216,7 +230,6 @@
                 <constraint firstItem="iPm-pv-W7R" firstAttribute="top" secondItem="9LC-Ie-gRJ" secondAttribute="bottom" constant="16" id="Up9-Vo-Nrg"/>
                 <constraint firstItem="FzF-la-OfZ" firstAttribute="trailing" secondItem="RhA-7O-9ae" secondAttribute="trailing" id="Vmc-0a-VhK"/>
                 <constraint firstItem="kCs-UP-zkQ" firstAttribute="top" secondItem="wE0-Id-gy7" secondAttribute="bottom" constant="12" id="Vsr-ud-2Jv"/>
-                <constraint firstItem="ZIq-qe-Ft2" firstAttribute="leading" secondItem="W6W-bz-ki0" secondAttribute="leading" constant="32" id="W2T-4v-ZwP"/>
                 <constraint firstItem="9LC-Ie-gRJ" firstAttribute="bottom" secondItem="GMh-iO-Oap" secondAttribute="bottom" id="WLO-l3-BH7"/>
                 <constraint firstAttribute="trailing" secondItem="9LC-Ie-gRJ" secondAttribute="trailing" constant="16" id="WVP-qS-rwK"/>
                 <constraint firstItem="iLZ-w9-riE" firstAttribute="bottom" secondItem="MMk-Jn-SMq" secondAttribute="bottom" id="X7q-Or-XT9"/>
@@ -234,7 +247,6 @@
                 <constraint firstItem="iLZ-w9-riE" firstAttribute="leading" secondItem="MMk-Jn-SMq" secondAttribute="trailing" constant="16" id="loJ-e6-1QF"/>
                 <constraint firstItem="59k-8e-2dJ" firstAttribute="top" secondItem="wyH-O6-okC" secondAttribute="top" id="nGS-LW-pzx"/>
                 <constraint firstItem="wE0-Id-gy7" firstAttribute="bottom" secondItem="MMk-Jn-SMq" secondAttribute="bottom" id="oTP-la-pJR"/>
-                <constraint firstAttribute="trailing" secondItem="ZIq-qe-Ft2" secondAttribute="trailing" constant="20" symbolic="YES" id="omh-6B-B3n"/>
                 <constraint firstItem="wyH-O6-okC" firstAttribute="top" secondItem="GMh-iO-Oap" secondAttribute="bottom" constant="16" id="ovL-FM-AEq"/>
                 <constraint firstItem="Zg1-9D-uVC" firstAttribute="leading" secondItem="GMh-iO-Oap" secondAttribute="trailing" constant="8" id="qXA-A8-zzN"/>
                 <constraint firstItem="FzF-la-OfZ" firstAttribute="bottom" secondItem="DMa-7K-wMc" secondAttribute="bottom" id="vbc-Rb-URp"/>

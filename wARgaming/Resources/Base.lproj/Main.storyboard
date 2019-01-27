@@ -125,6 +125,26 @@
                                     <constraint firstAttribute="height" id="5WD-U8-w9l"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B0T-0C-D2a">
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="NOb-Ql-77k">
+                                    <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-Iv-Jq5">
+                                            <rect key="frame" x="349.5" y="520" width="135.5" height="72"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="60"/>
+                                            <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="gbE-Iv-Jq5" firstAttribute="centerY" secondItem="NOb-Ql-77k" secondAttribute="centerY" id="qrD-RH-Po9"/>
+                                        <constraint firstItem="gbE-Iv-Jq5" firstAttribute="centerX" secondItem="NOb-Ql-77k" secondAttribute="centerX" id="rek-vy-290"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -133,6 +153,7 @@
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="8kz-ci-esx"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="bottom" secondItem="AVV-pw-UXU" secondAttribute="bottom" id="F8D-ly-o4p"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstItem="B0T-0C-D2a" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="Hr7-vf-TYW"/>
                             <constraint firstItem="Kmy-63-VsC" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="IC3-r7-wRs"/>
                             <constraint firstItem="bJS-4d-9yo" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="IS8-nJ-cER"/>
                             <constraint firstItem="Kmy-63-VsC" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="16" id="J22-CE-Bas"/>
@@ -141,8 +162,11 @@
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="RVY-h5-9Os" secondAttribute="trailing" constant="16" id="XdX-CU-yFw"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="AVV-pw-UXU" secondAttribute="trailing" id="lPV-Zg-AQA"/>
+                            <constraint firstItem="B0T-0C-D2a" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="mFn-A0-Vg7"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="B0T-0C-D2a" secondAttribute="trailing" id="obz-sl-eCN"/>
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="pWA-rG-UUF"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
+                            <constraint firstItem="B0T-0C-D2a" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="wiA-Zi-PWd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
@@ -160,11 +184,13 @@
                         <outlet property="playerLabel" destination="N2Y-R2-D2E" id="7DO-aD-V5U"/>
                         <outlet property="playerView" destination="Kmy-63-VsC" id="FJh-ER-bHY"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="j5z-Cw-W0V"/>
+                        <outlet property="victoryLabel" destination="gbE-Iv-Jq5" id="3oB-L4-HIQ"/>
+                        <outlet property="victoryView" destination="B0T-0C-D2a" id="ZDK-3h-b41"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53.600000000000001" y="26.53673163418291"/>
+            <point key="canvasLocation" x="53.237410071942449" y="26.438848920863311"/>
         </scene>
     </scenes>
     <resources>
