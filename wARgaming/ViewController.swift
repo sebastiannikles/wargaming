@@ -119,7 +119,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard currentPhase != .Selection else { return }
+        guard currentPhase != .Selection && currentMovedNode == nil else { return }
         
         let touch = touches.first as! UITouch
         if(touch.view == self.sceneView) {
