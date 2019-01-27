@@ -125,18 +125,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if(touch.view == self.sceneView) {
             let viewTouchLocation:CGPoint = touch.location(in: sceneView)
             guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
-                firstCharacter?.hideMoveRadius()
-                secondCharacter?.hideMoveRadius()
+                hideMoveRadius()
                 return
             }
             
             var char: Character?
-
             if isCharacter(node: result.node, char: &char) {
-                char?.showMoveRadius()
+                showMoveRadius(at: char)
             } else {
-                firstCharacter?.hideMoveRadius()
-                secondCharacter?.hideMoveRadius()
+                hideMoveRadius()
             }
         }
     }
@@ -175,6 +172,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             currentPlayer = 1
             updateHint()
             
+            addMovmentRadius()
+            
             return firstCharacter
         }
         
@@ -188,6 +187,50 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         return nil
+    }
+    
+    // MARK: - Radius handling
+    
+    var movementNode: SCNNode!
+    var currentMovementRadius: Double = 0.0
+    
+    func addMovmentRadius() {
+        let circle = SCNCylinder(radius: 0.0, height: 0.001)
+        circle.firstMaterial?.diffuse.contents = UIColor(red: 0.83, green: 0.83, blue: 0.83, alpha: 0.3)
+        
+        movementNode = SCNNode(geometry: circle)
+        movementNode.position = SCNVector3Zero
+        
+        sceneView.scene.rootNode.addChildNode(movementNode)
+    }
+    
+    func showMoveRadius(at character: Character?) {
+        guard let character = character else { return }
+        
+        movementNode.position = character.position
+        currentMovementRadius = character.movementRadius
+        
+        let animation = CABasicAnimation(keyPath: "geometry.radius")
+        animation.fromValue = 0.0
+        animation.toValue = character.movementRadius
+        animation.duration = 0.35
+        animation.autoreverses = false
+        animation.fillMode = CAMediaTimingFillMode.forwards
+        animation.isRemovedOnCompletion = false
+        movementNode.addAnimation(animation, forKey: "radius")
+    }
+    
+    func hideMoveRadius() {
+        let animation = CABasicAnimation(keyPath: "geometry.radius")
+        animation.fromValue = currentMovementRadius
+        animation.toValue = 0.0
+        animation.duration = 0.35
+        animation.autoreverses = false
+        animation.fillMode = CAMediaTimingFillMode.forwards
+        animation.isRemovedOnCompletion = false
+        movementNode.addAnimation(animation, forKey: "radius")
+        
+        currentMovementRadius = 0.0
     }
     
     // MARK: - Game Info Helpers

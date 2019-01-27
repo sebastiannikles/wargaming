@@ -13,8 +13,6 @@ import ARKit
 class Character: SCNNode {
     var movementRadius = 0.0
     
-    var movementNode: SCNNode!
-    
     static func create(from objectAnchor: ARObjectAnchor?) -> Character? {
         guard let objectAnchor = objectAnchor else { return nil }
         
@@ -24,32 +22,9 @@ class Character: SCNNode {
         
         character.addCharacterBox(with: objectAnchor)
         character.addCharacterInfo(with: objectAnchor)
-        character.addMovmentRadius(with: objectAnchor)
         character.addCharacterStats(with: objectAnchor)
         
         return character
-    }
-    
-    func showMoveRadius() {
-        let animation = CABasicAnimation(keyPath: "geometry.radius")
-        animation.fromValue = 0.0
-        animation.toValue = movementRadius
-        animation.duration = 0.35
-        animation.autoreverses = false
-        animation.fillMode = CAMediaTimingFillMode.forwards
-        animation.isRemovedOnCompletion = false
-        movementNode.addAnimation(animation, forKey: "radius")
-    }
-    
-    func hideMoveRadius() {
-        let animation = CABasicAnimation(keyPath: "geometry.radius")
-        animation.fromValue = movementRadius
-        animation.toValue = 0.0
-        animation.duration = 0.35
-        animation.autoreverses = false
-        animation.fillMode = CAMediaTimingFillMode.forwards
-        animation.isRemovedOnCompletion = false
-        movementNode.addAnimation(animation, forKey: "radius")
     }
     
     func addCharacterBox(with objectAnchor: ARObjectAnchor) {
@@ -75,16 +50,6 @@ class Character: SCNNode {
         planeNode.position = SCNVector3Make(objectAnchor.referenceObject.center.x, objectAnchor.referenceObject.center.y + objectAnchor.referenceObject.extent.y + 0.03, objectAnchor.referenceObject.center.z)
         
         addChildNode(planeNode)
-    }
-    
-    func addMovmentRadius(with objectAnchor: ARObjectAnchor) {
-        let circle = SCNCylinder(radius: 0.0, height: 0.001)
-        circle.firstMaterial?.diffuse.contents = UIColor(red: 0.83, green: 0.83, blue: 0.83, alpha: 0.3)
-        
-        movementNode = SCNNode(geometry: circle)
-        movementNode.position = SCNVector3Make(objectAnchor.referenceObject.center.x, 0, objectAnchor.referenceObject.center.z)
-        
-        addChildNode(movementNode)
     }
     
     func addCharacterStats(with objectAnchor: ARObjectAnchor) {
