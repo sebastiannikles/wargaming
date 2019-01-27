@@ -237,6 +237,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func showMoveRadius(at character: Character?) {
         guard let character = character else { return }
         
+        hideHint()
+        
         movementNode.position = character.position
         currentMovementRadius = character.movementRadius
         currentMovedNode = character
@@ -299,6 +301,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             shakeAnimation()
             return
         }
+        
+        hideMoveRadius()
         
         switch currentPhase {
         case .Movement?:
@@ -373,13 +377,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    func hideHint() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.7, animations: {
+                self.hintViewTop.constant = -self.phaseView.frame.height
+                self.hintView.alpha = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
     func updateHintText() {
         var hint: String!
         
         if currentPhase == .Selection {
             hint = "Choose your character by looking at it"
         } else if currentPhase == .Movement {
-            hint = "Whoops"
+            hint = "Tap the character you want to move"
         }
         
         DispatchQueue.main.async {
