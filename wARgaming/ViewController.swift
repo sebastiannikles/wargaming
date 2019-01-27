@@ -189,14 +189,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return nil
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        if currentPhase == .Movement && node == currentMovedNode {
+            checkMovementRadius()
+        }
+    }
+    
     // MARK: - Radius handling
     
     var movementNode: SCNNode!
     var currentMovementRadius: Double = 0.0
+    var currentMovedNode: SCNNode?
+    
+    var isInRange = true
+    let defaultCircleColor = UIColor(red: 0.83, green: 0.83, blue: 0.83, alpha: 0.3)
+    let outOfRangeCircleColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.3)
     
     func addMovmentRadius() {
         let circle = SCNCylinder(radius: 0.0, height: 0.001)
-        circle.firstMaterial?.diffuse.contents = UIColor(red: 0.83, green: 0.83, blue: 0.83, alpha: 0.3)
+        circle.firstMaterial?.diffuse.contents = defaultCircleColor
         
         movementNode = SCNNode(geometry: circle)
         movementNode.position = SCNVector3Zero
@@ -209,6 +220,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         movementNode.position = character.position
         currentMovementRadius = character.movementRadius
+        currentMovedNode = character
+        isInRange = true
         
         let animation = CABasicAnimation(keyPath: "geometry.radius")
         animation.fromValue = 0.0
@@ -231,6 +244,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         movementNode.addAnimation(animation, forKey: "radius")
         
         currentMovementRadius = 0.0
+        currentMovedNode = nil
+    }
+    
+    func checkMovementRadius() {
+        guard let movedNode = currentMovedNode else { return }
+        
+        print("check radius")
+        
+        let x1 = movementNode.position.x
+        let z1 = movementNode.position.z
+        let x2 = movedNode.position.x
+        let z2 = movedNode.position.z
+        
+        let distance = sqrtf(powf(x2-x1, 2) + powf(z2-z1, 2))
+        
+        if (isInRange && distance <= Float(currentMovementRadius)) || (!isInRange && distance > Float(currentMovementRadius)) {
+            return
+        }
+        
+        isInRange = !isInRange
+        UIView.animate(withDuration: 0.35, animations: {
+            self.movementNode.geometry?.firstMaterial?.diffuse.contents = self.isInRange
+                ? self.defaultCircleColor
+                : self.outOfRangeCircleColor
+        })
     }
     
     // MARK: - Game Info Helpers
