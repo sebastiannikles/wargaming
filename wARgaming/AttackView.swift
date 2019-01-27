@@ -109,10 +109,6 @@ class AttackView: UIView, NibLoadable {
         
         rolledBallisticSkillLabel.text = String(roll)
         
-        defendingCharacter.wounds -= attackingCharacter.weaponDamage
-        phase = .Success
-        return
-        
         if roll == 1 || roll < attackingCharacter.ballisticSkill {
             phase = .Ended
             rolledBallisticSkillLabel.textColor = UIColor.red
