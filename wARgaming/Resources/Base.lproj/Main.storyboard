@@ -22,14 +22,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdO-ch-gYq">
-                                <rect key="frame" x="150.5" y="36" width="74" height="36.5"/>
+                                <rect key="frame" x="146.5" y="36" width="82.5" height="42"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0jO-ZW-hPM">
-                                    <rect key="frame" x="0.0" y="0.0" width="74" height="36"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="82" height="42"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-4r-Nwj">
-                                            <rect key="frame" x="16" y="8" width="42" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="16" y="8" width="50" height="25.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                             <color key="textColor" red="0.72989908854166663" green="0.72989908854166663" blue="0.72989908854166663" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -44,11 +44,62 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmy-63-VsC">
+                                <rect key="frame" x="16" y="36" width="42" height="42"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Vn0-G4-c3z">
+                                    <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N2Y-R2-D2E">
+                                            <rect key="frame" x="6.5" y="6" width="29.5" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                            <color key="textColor" red="0.72989908849999996" green="0.72989908849999996" blue="0.72989908849999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="N2Y-R2-D2E" firstAttribute="centerY" secondItem="Vn0-G4-c3z" secondAttribute="centerY" id="O0B-5S-KAm"/>
+                                        <constraint firstItem="N2Y-R2-D2E" firstAttribute="centerX" secondItem="Vn0-G4-c3z" secondAttribute="centerX" id="i5x-xk-U3P"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="5zs-Zl-sFU"/>
+                                    <constraint firstAttribute="width" constant="42" id="orT-pI-bar"/>
+                                </constraints>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJS-4d-9yo">
+                                <rect key="frame" x="150.5" y="94" width="74" height="37"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="tkS-Qw-zCQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="74" height="37"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohb-4e-JYG">
+                                            <rect key="frame" x="16" y="8" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                            <color key="textColor" red="0.72989908849999996" green="0.72989908849999996" blue="0.72989908849999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ohb-4e-JYG" firstAttribute="leading" secondItem="tkS-Qw-zCQ" secondAttribute="leading" constant="16" id="5DC-Gh-Hcc"/>
+                                        <constraint firstAttribute="bottom" secondItem="ohb-4e-JYG" secondAttribute="bottom" constant="8" id="Hda-Y7-DbK"/>
+                                        <constraint firstItem="ohb-4e-JYG" firstAttribute="top" secondItem="tkS-Qw-zCQ" secondAttribute="top" constant="8" id="UKC-bS-nCW"/>
+                                        <constraint firstAttribute="trailing" secondItem="ohb-4e-JYG" secondAttribute="trailing" constant="16" id="XWV-e2-8xQ"/>
+                                        <constraint firstItem="ohb-4e-JYG" firstAttribute="centerY" secondItem="tkS-Qw-zCQ" secondAttribute="centerY" id="nCU-ev-LPZ"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="bJS-4d-9yo" firstAttribute="top" secondItem="TdO-ch-gYq" secondAttribute="bottom" constant="16" id="3Yu-IC-j6B"/>
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="8kz-ci-esx"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstItem="Kmy-63-VsC" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="IC3-r7-wRs"/>
+                            <constraint firstItem="bJS-4d-9yo" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="IS8-nJ-cER"/>
+                            <constraint firstItem="Kmy-63-VsC" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="16" id="J22-CE-Bas"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="pWA-rG-UUF"/>
@@ -57,9 +108,14 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
-                        <outlet property="hintLabel" destination="6rM-4r-Nwj" id="ez2-QK-bal"/>
-                        <outlet property="hintView" destination="TdO-ch-gYq" id="yWf-2q-fhZ"/>
-                        <outlet property="hintViewTop" destination="8kz-ci-esx" id="bbW-g3-0qI"/>
+                        <outlet property="hintLabel" destination="ohb-4e-JYG" id="Yqe-Qo-eSi"/>
+                        <outlet property="hintView" destination="bJS-4d-9yo" id="BmO-SR-SOt"/>
+                        <outlet property="hintViewTop" destination="3Yu-IC-j6B" id="SaI-i2-lw4"/>
+                        <outlet property="phaseLabel" destination="6rM-4r-Nwj" id="w3q-B7-eql"/>
+                        <outlet property="phaseView" destination="TdO-ch-gYq" id="3fD-Oe-xXB"/>
+                        <outlet property="phaseViewTop" destination="8kz-ci-esx" id="hm4-WR-0Ap"/>
+                        <outlet property="playerLabel" destination="N2Y-R2-D2E" id="7DO-aD-V5U"/>
+                        <outlet property="playerView" destination="Kmy-63-VsC" id="FJh-ER-bHY"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="j5z-Cw-W0V"/>
                     </connections>
                 </viewController>

@@ -12,6 +12,11 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
+    @IBOutlet weak var phaseViewTop: NSLayoutConstraint!
+    @IBOutlet weak var phaseLabel: UILabel!
+    @IBOutlet weak var phaseView: UIVisualEffectView!
+    @IBOutlet weak var playerView: UIVisualEffectView!
+    @IBOutlet weak var playerLabel: UILabel!
     @IBOutlet weak var hintViewTop: NSLayoutConstraint!
     @IBOutlet weak var hintView: UIVisualEffectView!
     @IBOutlet weak var hintLabel: UILabel!
@@ -22,18 +27,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var firstCharacter: Character?
     var secondCharacter: Character?
     
-    var currentPlayer = 0 {
+    var currentPlayer: Int! {
         didSet {
-            updateHintText()
+            updatePlayerText()
         }
     }
     
     func isPlayer1() -> Bool { return currentPlayer == 0 }
     func isPlayer2() -> Bool { return currentPlayer != 0 }
-    func getCurrentPlayerString() -> String { return isPlayer1() ? "Player 1" : "Player 2" }
+    func getCurrentPlayerString() -> String { return isPlayer1() ? "P1" : "P2" }
     
     var currentPhase: TurnPhase! {
         didSet {
+            updatePhaseText()
             updateHintText()
         }
     }
@@ -63,7 +69,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = scene
         
         setUpHintView()
+        setUpPhaseView()
+        setUpPlayerView()
         
+        currentPlayer = 0
         currentPhase = .Selection
     }
     
@@ -72,8 +81,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         hintView.layer.borderWidth = 1
         hintView.layer.borderColor = hintLabel.textColor.cgColor
         hintView.clipsToBounds = true
-        
-        hintView.subviews[0].layer.cornerRadius = 6
+    }
+    
+    func setUpPhaseView() {
+        phaseView.layer.cornerRadius = 6
+        phaseView.layer.borderWidth = 1
+        phaseView.layer.borderColor = hintLabel.textColor.cgColor
+        phaseView.clipsToBounds = true
+    }
+    
+    func setUpPlayerView() {
+        playerView.layer.cornerRadius = playerView.frame.width / 2
+        playerView.layer.borderWidth = 1
+        playerView.layer.borderColor = hintLabel.textColor.cgColor
+        playerView.clipsToBounds = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,7 +119,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard currentPhase == .Selection else { return }
+        guard currentPhase != .Selection else { return }
         
         let touch = touches.first as! UITouch
         if(touch.view == self.sceneView) {
@@ -173,8 +194,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func updateHintText() {
         if currentPhase == .Selection {
             DispatchQueue.main.async {
-                self.hintLabel.text = "\(self.getCurrentPlayerString()): Choose your character by looking at it"
+                self.hintLabel.text = "Choose your character by looking at it"
             }
+        }
+    }
+    
+    func updatePhaseText() {
+        var phase: String!
+        
+        if currentPhase == .Selection {
+            phase = "Selection"
+        }
+        
+        DispatchQueue.main.async {
+            self.phaseLabel.text = phase
+        }
+    }
+    
+    func updatePlayerText() {
+        DispatchQueue.main.async {
+            self.playerLabel.text = self.getCurrentPlayerString()
         }
     }
 }
