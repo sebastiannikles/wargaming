@@ -320,7 +320,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let act = SCNAction.sequence([act0, act1])
         movementNode.runAction(act)
     }
-    // TODO: Reset nodes when changing phase with attack
+    
     func checkMovementRadius() {
         guard let movedNode = currentMovedNode else { return }
         
@@ -369,6 +369,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         hideMoveRadius()
+        attackTarget = nil
+        attackingNode = nil
         
         switch currentPhase {
         case .Movement?:
