@@ -29,6 +29,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var attackView: AttackView!
     @IBOutlet weak var attackViewHeight: NSLayoutConstraint!
     
+    var victoryPlayer: AVAudioPlayer!
+    
     // MARK: - Phase declaration
     
     var firstCharacter: Character?
@@ -60,6 +62,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            victoryPlayer = try AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sweetVictory", withExtension: "mp3")!)
+            victoryPlayer.numberOfLoops = 0
+            victoryPlayer.prepareToPlay()
+        }
+        catch {
+            
+        }
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -162,6 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         self.hideChangePhase()
                         
                         self.showVictoryView()
+                        self.victoryPlayer.play()
                     } else {
                         self.canSwitchPhase = true
                         self.changePhase(self)
