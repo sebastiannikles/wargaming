@@ -131,6 +131,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             var char: Character?
             if isCharacter(node: result.node, char: &char) {
+                let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
+                if !isRightTurn {
+                    hideMoveRadius()
+                    return
+                }
+                
                 showMoveRadius(at: char)
             } else {
                 hideMoveRadius()
@@ -249,8 +255,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func checkMovementRadius() {
         guard let movedNode = currentMovedNode else { return }
-        
-        print("check radius")
         
         let x1 = movementNode.position.x
         let z1 = movementNode.position.z
