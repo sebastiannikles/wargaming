@@ -300,6 +300,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
         
+        switch currentPhase {
+        case .Movement?:
+            changePhase(to: .Attack, animated: true)
+        case .Attack?:
+            currentPlayer = isPlayer1() ? 1 : 0
+            changePhase(to: .Movement, animated: true)
+        default:
+            return
+        }
     }
     
     func shakeAnimation() {
