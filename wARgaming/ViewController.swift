@@ -182,6 +182,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 return
             }
             
+            if char == nil || !isInRange(char!) {
+                shakeAnimation(for: hintView)
+                highlightMoveRadius()
+                return
+            }
+            
             attackTarget = char
             // TODO: Show dice view here if in range
             print("Target selected")
@@ -298,6 +304,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         currentMovedNode = nil
     }
     
+    func highlightMoveRadius() {
+        let oldColor = defaultCircleColor
+        let newColor = outOfRangeCircleColor
+        let duration: TimeInterval = 0.2
+        let act0 = SCNAction.customAction(duration: duration, action: { (node, elapsedTime) in
+            let percentage = elapsedTime / CGFloat(duration)
+            node.geometry?.firstMaterial?.diffuse.contents = self.getPercentageColor(from: oldColor, to: newColor, percentage: percentage)
+        })
+        let act1 = SCNAction.customAction(duration: duration, action: { (node, elapsedTime) in
+            let percentage = elapsedTime / CGFloat(duration)
+            node.geometry?.firstMaterial?.diffuse.contents = self.getPercentageColor(from: newColor, to: oldColor, percentage: percentage)
+        })
+        
+        let act = SCNAction.sequence([act0, act1])
+        movementNode.runAction(act)
+    }
+    // TODO: Reset nodes when changing phase with attack
     func checkMovementRadius() {
         guard let movedNode = currentMovedNode else { return }
         
@@ -322,13 +345,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         })
     }
     
+    func isInRange(_ node: Character) -> Bool {
+        guard let attackingNode = attackingNode else { return false }
+        
+        let x1 = attackingNode.position.x
+        let z1 = attackingNode.position.z
+        let x2 = node.position.x
+        let z2 = node.position.z
+        
+        let distance = sqrtf(powf(x2-x1, 2) + powf(z2-z1, 2))
+        
+        return distance <= Float(attackingNode.attackRadius)
+    }
+    
     // MARK: - Switch Phase Action
     
     var canSwitchPhase = false
     
     @IBAction func changePhase(_ sender: Any) {
         guard canSwitchPhase else {
-            shakeAnimation()
+            shakeAnimation(for: changePhaseView)
             return
         }
         
@@ -345,15 +381,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func shakeAnimation() {
+    func shakeAnimation(for view: UIView) {
         let animation = CABasicAnimation(keyPath: "position")
         animation.duration = 0.1
         animation.repeatCount = 2
         animation.autoreverses = true
-        animation.fromValue = NSValue(cgPoint: CGPoint(x: changePhaseView.center.x - 10, y: changePhaseView.center.y))
-        animation.toValue = NSValue(cgPoint: CGPoint(x: changePhaseView.center.x + 10, y: changePhaseView.center.y))
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: view.center.x - 10, y: view.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: view.center.x + 10, y: view.center.y))
         
-        changePhaseView.layer.add(animation, forKey: "position")
+        view.layer.add(animation, forKey: "position")
     }
     
     // MARK: - Game Info Helpers
@@ -453,5 +489,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         DispatchQueue.main.async {
             self.playerLabel.text = self.getCurrentPlayerString()
         }
+    }
+}
+extension ViewController {
+    func getPercentageColor(from: UIColor, to: UIColor, percentage: CGFloat) -> UIColor {
+        let fromComponents = from.cgColor.components!
+        let toComponents = to.cgColor.components!
+        
+        let color = UIColor(red: fromComponents[0] + (toComponents[0] - fromComponents[0]) * percentage,
+                            green: fromComponents[1] + (toComponents[1] - fromComponents[1]) * percentage,
+                            blue: fromComponents[2] + (toComponents[2] - fromComponents[2]) * percentage,
+                            alpha: fromComponents[3] + (toComponents[3] - fromComponents[3]) * percentage)
+        return color
     }
 }

@@ -12,6 +12,7 @@ import ARKit
 
 class Character: SCNNode {
     var movementRadius = 0.0
+    var attackRadius = 0.0
     
     static func create(from objectAnchor: ARObjectAnchor?) -> Character? {
         guard let objectAnchor = objectAnchor else { return nil }
@@ -19,6 +20,7 @@ class Character: SCNNode {
         let character = Character()
         
         character.movementRadius = 0.2
+        character.attackRadius = 0.2
         
         character.addCharacterBox(with: objectAnchor)
         character.addCharacterInfo(with: objectAnchor)
