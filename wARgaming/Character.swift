@@ -14,6 +14,14 @@ class Character: SCNNode {
     var movementRadius = 0.0
     var attackRadius = 0.0
     
+    var ballisticSkill = 2
+    var weaponStrength = 2
+    var armorPenetration = 3
+    var weaponDamage = 3
+    var toughness = 5
+    var save = 2
+    var wounds = 6
+    
     static func create(from objectAnchor: ARObjectAnchor?) -> Character? {
         guard let objectAnchor = objectAnchor else { return nil }
         

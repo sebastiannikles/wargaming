@@ -23,6 +23,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var hintView: UIVisualEffectView!
     @IBOutlet weak var hintLabel: UILabel!
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var attackView: AttackView!
+    @IBOutlet weak var attackViewHeight: NSLayoutConstraint!
     
     // MARK: - Phase declaration
     
@@ -73,6 +75,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         setUpPhaseView()
         setUpChangePhaseView()
         setUpPlayerView()
+        setUpAttackView()
         
         currentPlayer = 0
         changePhase(to: .Selection, animated: false)
@@ -109,6 +112,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         playerView.clipsToBounds = true
     }
     
+    func setUpAttackView() {
+        attackView.clipsToBounds = true
+        attackView.layer.cornerRadius = 12
+        attackView.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -128,10 +137,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
 
-    // MARK: - Touch Handling
+    // MARK: - Attack handling
     
     var attackTarget: Character?
     var attackingNode: Character?
+    
+    func showAttackView() {
+        guard let attacker = attackingNode, let defender = attackTarget else { return }
+        
+        attackView.setUp(attacker, defender)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.35, animations: {
+                self.attackViewHeight.constant = 300
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard currentPhase != .Selection else { return }
@@ -188,9 +211,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 return
             }
             
+            canSwitchPhase = false
             attackTarget = char
-            // TODO: Show dice view here if in range
-            print("Target selected")
+            hideHint()
+            showAttackView()
         }
     }
     

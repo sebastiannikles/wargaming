@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad10_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,14 +15,14 @@
             <objects>
                 <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="wARgaming" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                             </arscnView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdO-ch-gYq">
-                                <rect key="frame" x="146.5" y="36" width="82" height="42"/>
+                                <rect key="frame" x="376" y="36" width="82" height="42"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0jO-ZW-hPM">
                                     <rect key="frame" x="0.0" y="0.0" width="82" height="42"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,7 +69,7 @@
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJS-4d-9yo">
-                                <rect key="frame" x="150.5" y="94" width="74" height="37"/>
+                                <rect key="frame" x="380" y="94" width="74" height="37"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="tkS-Qw-zCQ">
                                     <rect key="frame" x="0.0" y="0.0" width="74" height="37"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -92,7 +92,7 @@
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RVY-h5-9Os">
-                                <rect key="frame" x="317" y="36" width="42" height="42"/>
+                                <rect key="frame" x="776" y="36" width="42" height="42"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="xJP-KV-g9d">
                                     <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -118,25 +118,37 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AVV-pw-UXU" customClass="AttackView" customModule="wARgaming" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1112" width="834" height="0.0"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="5WD-U8-w9l"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="RVY-h5-9Os" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="0zw-GR-6fX"/>
                             <constraint firstItem="bJS-4d-9yo" firstAttribute="top" secondItem="TdO-ch-gYq" secondAttribute="bottom" constant="16" id="3Yu-IC-j6B"/>
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="8kz-ci-esx"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="bottom" secondItem="AVV-pw-UXU" secondAttribute="bottom" id="F8D-ly-o4p"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
                             <constraint firstItem="Kmy-63-VsC" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="IC3-r7-wRs"/>
                             <constraint firstItem="bJS-4d-9yo" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="IS8-nJ-cER"/>
                             <constraint firstItem="Kmy-63-VsC" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="16" id="J22-CE-Bas"/>
+                            <constraint firstItem="AVV-pw-UXU" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="SLR-7Y-eAF"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="RVY-h5-9Os" secondAttribute="trailing" constant="16" id="XdX-CU-yFw"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="AVV-pw-UXU" secondAttribute="trailing" id="lPV-Zg-AQA"/>
                             <constraint firstItem="TdO-ch-gYq" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="pWA-rG-UUF"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="attackView" destination="AVV-pw-UXU" id="jqD-Kg-hlg"/>
+                        <outlet property="attackViewHeight" destination="5WD-U8-w9l" id="Vbb-ch-25l"/>
                         <outlet property="changePhaseButton" destination="87x-5O-qne" id="aLj-Tg-jl1"/>
                         <outlet property="changePhaseView" destination="RVY-h5-9Os" id="Bk5-F0-nup"/>
                         <outlet property="hintLabel" destination="ohb-4e-JYG" id="Yqe-Qo-eSi"/>
@@ -152,6 +164,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="53.600000000000001" y="26.53673163418291"/>
         </scene>
     </scenes>
     <resources>
