@@ -10,10 +10,17 @@ import Foundation
 import SceneKit
 import ARKit
 
+enum WeaponStrengthType {
+    case Integer
+    case Multiplier
+    case Add
+}
+
 class Character: SCNNode {
     var movementRadius = 0.0
     var attackRadius = 0.0
     
+    var weaponStrengthType: WeaponStrengthType = .Add
     var ballisticSkill = 2
     var weaponStrength = 2
     var armorPenetration = 3
@@ -21,6 +28,7 @@ class Character: SCNNode {
     var toughness = 5
     var save = 2
     var wounds = 6
+    var strength = 4
     
     static func create(from objectAnchor: ARObjectAnchor?) -> Character? {
         guard let objectAnchor = objectAnchor else { return nil }
@@ -35,6 +43,17 @@ class Character: SCNNode {
         character.addCharacterStats(with: objectAnchor)
         
         return character
+    }
+    
+    func getWeaponStrength() -> Int {
+        switch weaponStrengthType {
+        case .Add:
+            return strength + weaponStrength
+        case .Integer:
+            return weaponStrength
+        case .Multiplier:
+            return strength * weaponStrength
+        }
     }
     
     func addCharacterBox(with objectAnchor: ARObjectAnchor) {

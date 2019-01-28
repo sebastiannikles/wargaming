@@ -113,6 +113,7 @@ class AttackView: UIView, NibLoadable {
             phase = .Ended
             rolledBallisticSkillLabel.textColor = UIColor.red
         } else {
+            rolledBallisticSkillLabel.textColor = UIColor.black
             phase = .WoundRoll
         }
     }
@@ -121,13 +122,15 @@ class AttackView: UIView, NibLoadable {
         let roll = arc4random_uniform(6) + 1
         let requiredRoll: Int!
         
-        if attackingCharacter.weaponStrength >= 2 * defendingCharacter.toughness {
+        let weaponStrength = attackingCharacter.getWeaponStrength()
+        
+        if weaponStrength >= 2 * defendingCharacter.toughness {
             requiredRoll = 2
-        } else if attackingCharacter.weaponStrength >= defendingCharacter.toughness {
+        } else if weaponStrength > defendingCharacter.toughness {
             requiredRoll = 3
-        } else if attackingCharacter.weaponStrength == defendingCharacter.toughness {
+        } else if weaponStrength == defendingCharacter.toughness {
             requiredRoll = 4
-        } else if 2 * attackingCharacter.weaponStrength < defendingCharacter.toughness {
+        } else if 2 * weaponStrength < defendingCharacter.toughness {
             requiredRoll = 6
         } else {
             requiredRoll = 5
@@ -139,6 +142,7 @@ class AttackView: UIView, NibLoadable {
             phase = .Ended
             rolledWSLabel.textColor = UIColor.red
         } else {
+            rolledWSLabel.textColor = UIColor.black
             phase = .SavingThrow
         }
     }
@@ -149,6 +153,7 @@ class AttackView: UIView, NibLoadable {
         rolledSVLabel.text = String(roll)
         
         if roll > 1 && Int(roll) - attackingCharacter.armorPenetration >= defendingCharacter.save {
+            rolledSVLabel.textColor = UIColor.black
             phase = .Ended
         } else {
             phase = .Success
