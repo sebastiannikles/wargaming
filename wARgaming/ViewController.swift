@@ -199,7 +199,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         guard !shouldIgnore else { return }
         
-        let touch = touches.first as! UITouch
+        let touch = touches.first!
         if(touch.view != self.sceneView) {
             return
         }

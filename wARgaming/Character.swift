@@ -17,8 +17,8 @@ enum WeaponStrengthType {
 }
 
 class Character: SCNNode {
-    var movementRadius = 0.0
-    var attackRadius = 0.0
+    var movementRadius = 0.2
+    var attackRadius = 0.2
     
     var weaponStrengthType: WeaponStrengthType = .Add
     var ballisticSkill = 2
@@ -34,9 +34,6 @@ class Character: SCNNode {
         guard let objectAnchor = objectAnchor else { return nil }
         
         let character = Character()
-        
-        character.movementRadius = 0.2
-        character.attackRadius = 0.2
         
         character.addCharacterBox(with: objectAnchor)
         character.addCharacterInfo(with: objectAnchor)
