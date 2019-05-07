@@ -69,7 +69,7 @@ class Character: SCNNode {
     func addCharacterInfo(with objectAnchor: ARObjectAnchor) {
         let plane = SCNPlane(width: 0.2, height: 0.0467)
         plane.cornerRadius = 0.01
-        let characterInfoScene = SKScene(fileNamed: "CharacterInfo")
+        let characterInfoScene = SKScene(fileNamed: objectAnchor.referenceObject.name == "LemanRuss" ? "CharacterInfoLeman" : "CharacterInfoGargbot")
         plane.firstMaterial?.diffuse.contents = characterInfoScene
         plane.firstMaterial?.isDoubleSided = false
         plane.firstMaterial?.diffuse.contentsTransform = SCNMatrix4Translate(SCNMatrix4MakeScale(1, -1, 1), 0, 1, 0)
