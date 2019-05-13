@@ -10,7 +10,6 @@
 		2628425521FE4F19001F9F67 /* AttackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2628425421FE4F19001F9F67 /* AttackView.swift */; };
 		2628425721FE5C24001F9F67 /* AttackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2628425621FE5C24001F9F67 /* AttackView.xib */; };
 		2628425921FE62DA001F9F67 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2628425821FE62DA001F9F67 /* NibLoadable.swift */; };
-		2628425B21FE6FFE001F9F67 /* sweetVictory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2628425A21FE6FFE001F9F67 /* sweetVictory.mp3 */; };
 		2649C8D421DDDBB3003C88B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2649C8D321DDDBB3003C88B4 /* AppDelegate.swift */; };
 		2649C8D821DDDBB3003C88B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2649C8D721DDDBB3003C88B4 /* ViewController.swift */; };
 		2649C8DB21DDDBB3003C88B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2649C8D921DDDBB3003C88B4 /* Main.storyboard */; };
@@ -28,7 +27,6 @@
 		2628425421FE4F19001F9F67 /* AttackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackView.swift; sourceTree = "<group>"; };
 		2628425621FE5C24001F9F67 /* AttackView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttackView.xib; sourceTree = "<group>"; };
 		2628425821FE62DA001F9F67 /* NibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
-		2628425A21FE6FFE001F9F67 /* sweetVictory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sweetVictory.mp3; sourceTree = "<group>"; };
 		2649C8D021DDDBB3003C88B4 /* wARgaming.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wARgaming.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2649C8D321DDDBB3003C88B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2649C8D721DDDBB3003C88B4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 		26CAD5E521E12ADE006063B5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2628425A21FE6FFE001F9F67 /* sweetVictory.mp3 */,
 				2649C8D921DDDBB3003C88B4 /* Main.storyboard */,
 				2628425621FE5C24001F9F67 /* AttackView.xib */,
 				2649C8DC21DDDBB5003C88B4 /* Assets.xcassets */,
@@ -165,7 +162,6 @@
 				26A9B77F2208D0B500F4E290 /* CharacterInfoLeman.sks in Resources */,
 				2628425721FE5C24001F9F67 /* AttackView.xib in Resources */,
 				2649C8E821DDDC85003C88B4 /* SceneKit.scnassets in Resources */,
-				2628425B21FE6FFE001F9F67 /* sweetVictory.mp3 in Resources */,
 				2649C8DD21DDDBB5003C88B4 /* Assets.xcassets in Resources */,
 				26DD72B821E01EBE005B7AED /* Stats.sks in Resources */,
 				2649C8DB21DDDBB3003C88B4 /* Main.storyboard in Resources */,

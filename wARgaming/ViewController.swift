@@ -12,6 +12,7 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
+    // The corresponding IBOutlets to the views used in Main.storyboard
     @IBOutlet weak var victoryView: UIVisualEffectView!
     @IBOutlet weak var victoryLabel: UILabel!
     
@@ -29,10 +30,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var attackView: AttackView!
     @IBOutlet weak var attackViewHeight: NSLayoutConstraint!
     
-    var victoryPlayer: AVAudioPlayer!
-    
     // MARK: - Phase declaration
     
+    // The players are represented through their models (only one model per player)
     var firstCharacter: Character?
     var secondCharacter: Character?
     
@@ -52,6 +52,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    // The three possible phases a turn can be in
     enum TurnPhase {
         case Selection
         case Movement
@@ -62,15 +63,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        do {
-            victoryPlayer = try AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sweetVictory", withExtension: "mp3")!)
-            victoryPlayer.numberOfLoops = 0
-            victoryPlayer.prepareToPlay()
-        }
-        catch {
-            
-        }
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -173,7 +165,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         self.hideChangePhase()
                         
                         self.showVictoryView()
-                        self.victoryPlayer.play()
                     } else {
                         self.canSwitchPhase = true
                         self.changePhase(self)
