@@ -2,8 +2,7 @@
 //  NibLoadable.swift
 //  wARgaming
 //
-//  Created by Sebastian Nikles on 27.01.19.
-//  Copyright © 2019 Sebastian Nikles. All rights reserved.
+//  TAKEN FROM https://stackoverflow.com/questions/9282365/load-view-from-an-external-xib-file-in-storyboard
 //
 
 import UIKit
@@ -12,6 +11,7 @@ public protocol NibLoadable {
     static var nibName: String { get }
 }
 
+// This extension provides functions for setting up UIViews from external xib files so they can be used in storyboards
 public extension NibLoadable where Self: UIView {
     
     public static var nibName: String {

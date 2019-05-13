@@ -10,6 +10,7 @@ import Foundation
 import SceneKit
 import ARKit
 
+// The different possible types used to calculate the weapon strength
 enum WeaponStrengthType {
     case Integer
     case Multiplier
@@ -17,6 +18,8 @@ enum WeaponStrengthType {
 }
 
 class Character: SCNNode {
+    // The properties inherent to a character
+    // Set to default values for exemplary purposes
     var movementRadius = 0.2
     var attackRadius = 0.2
     
@@ -30,6 +33,7 @@ class Character: SCNNode {
     var wounds = 6
     var strength = 4
     
+    // Creates the character node itself and its child nodes used for additional augmentation of the character
     static func create(from objectAnchor: ARObjectAnchor?) -> Character? {
         guard let objectAnchor = objectAnchor else { return nil }
         
@@ -42,6 +46,7 @@ class Character: SCNNode {
         return character
     }
     
+    // Calculates the weapon strength based on the type
     func getWeaponStrength() -> Int {
         switch weaponStrengthType {
         case .Add:
@@ -53,6 +58,7 @@ class Character: SCNNode {
         }
     }
     
+    // Creates a bounding box around the physical object using the created anchor by ARKit
     func addCharacterBox(with objectAnchor: ARObjectAnchor) {
         let box = SCNBox(width: CGFloat(objectAnchor.referenceObject.extent.x), height: CGFloat(objectAnchor.referenceObject.extent.y), length: CGFloat(objectAnchor.referenceObject.extent.z), chamferRadius: 0.0)
         box.firstMaterial?.diffuse.contents = UIColor.clear
@@ -63,6 +69,7 @@ class Character: SCNNode {
         addChildNode(boxNode)
     }
     
+    // Creates a billboard node which shows the character's name and shows it above the physical object
     func addCharacterInfo(with objectAnchor: ARObjectAnchor) {
         let plane = SCNPlane(width: 0.2, height: 0.0467)
         plane.cornerRadius = 0.01
@@ -78,6 +85,7 @@ class Character: SCNNode {
         addChildNode(planeNode)
     }
     
+    // Creates a billboard node which shows the character's stats and shows it below the physical object
     func addCharacterStats(with objectAnchor: ARObjectAnchor) {
         let plane = SCNPlane(width: 0.15, height: 0.03)
         plane.cornerRadius = 0.01

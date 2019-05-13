@@ -10,6 +10,8 @@ import UIKit
 
 @IBDesignable
 class AttackView: UIView, NibLoadable {
+    
+    // The different IBOutlets used in AttackView.xib to display the attack's progress
     @IBOutlet weak var rollButton: UIButton!
     @IBOutlet weak var attackStateLabel: UILabel!
     
@@ -27,11 +29,16 @@ class AttackView: UIView, NibLoadable {
     
     @IBOutlet weak var attackerNameLabel: UILabel!
     @IBOutlet weak var defenderNameLabel: UILabel!
+    
+    // The both characters participating in the attack
     var attackingCharacter: Character!
     var defendingCharacter: Character!
     
+    // The callback which is executed after the action has concluded
     var completionAction: (() -> ())!
     
+    // The current phase
+    // Updates the button text according to the current phase
     var phase: AttackPhase! {
         didSet {
             switch phase {
@@ -51,6 +58,7 @@ class AttackView: UIView, NibLoadable {
         }
     }
     
+    // The possible phases an attack can be in
     enum AttackPhase {
         case HitRoll
         case WoundRoll
@@ -59,23 +67,28 @@ class AttackView: UIView, NibLoadable {
         case Success
     }
     
+    // Sets up the view using the extension method
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupFromNib()
     }
     
+    // Sets up the view using the extension method
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupFromNib()
     }
     
     func setUp(_ attacker: Character, _ defender: Character, completion: @escaping (() -> ())) {
+        // Sets the attack to its first phase
         phase = .HitRoll
         
+        // Sets up the required properties
         attackingCharacter = attacker
         defendingCharacter = defender
         completionAction = completion
 
+        // Resets the UI element text's
         ballisticSkillLabel.text = "\(attacker.ballisticSkill)+"
         rolledBallisticSkillLabel.text = ""
         wSLabel.text = "+\(attacker.weaponStrength)"
@@ -92,6 +105,7 @@ class AttackView: UIView, NibLoadable {
         attackStateLabel.text = ""
     }
     
+    // The roll button's action which executes the roll (or the completion action) based on the current phase
     @IBAction func roll(_ sender: Any) {
         if phase == .HitRoll {
             handleHitRoll()
@@ -105,10 +119,13 @@ class AttackView: UIView, NibLoadable {
     }
     
     func handleHitRoll() {
+        // Generates a number for the dice roll
         let roll = arc4random_uniform(6) + 1
         
+        // Updates the text
         rolledBallisticSkillLabel.text = String(roll)
         
+        // Compares the roll to the threshold to determine the next phase
         if roll == 1 || roll < attackingCharacter.ballisticSkill {
             phase = .Ended
             rolledBallisticSkillLabel.textColor = UIColor.red
@@ -119,11 +136,13 @@ class AttackView: UIView, NibLoadable {
     }
     
     func handleWoundRoll() {
+        // Generates a number for the dice roll
         let roll = arc4random_uniform(6) + 1
         let requiredRoll: Int!
         
         let weaponStrength = attackingCharacter.getWeaponStrength()
         
+        // Calculates the required roll based on the weapon strength of the attacker and the toughness of the defender
         if weaponStrength >= 2 * defendingCharacter.toughness {
             requiredRoll = 2
         } else if weaponStrength > defendingCharacter.toughness {
@@ -136,8 +155,10 @@ class AttackView: UIView, NibLoadable {
             requiredRoll = 5
         }
         
+        // Updates the text
         rolledWSLabel.text = String(roll)
         
+        // Compares the roll to the threshold to determine the next phase
         if roll == 1 || roll < requiredRoll {
             phase = .Ended
             rolledWSLabel.textColor = UIColor.red
@@ -148,10 +169,13 @@ class AttackView: UIView, NibLoadable {
     }
     
     func handleSavingThrow() {
+        // Generates a number for the dice roll
         let roll = arc4random_uniform(6) + 1
         
+        // Updates the text
         rolledSVLabel.text = String(roll)
         
+        // Compares the roll to the threshold to determine the next phase
         if roll > 1 && Int(roll) - attackingCharacter.armorPenetration >= defendingCharacter.save {
             rolledSVLabel.textColor = UIColor.black
             phase = .Ended

@@ -69,6 +69,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        // Show the bounding boxes of virtual nodes
         sceneView.debugOptions = SCNDebugOptions.showBoundingBoxes
         
         // Create a new scene
@@ -77,17 +78,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
+        // Set up the different UI elements in the view
         setUpHintView()
         setUpPhaseView()
         setUpChangePhaseView()
         setUpPlayerView()
         setUpAttackView()
         
+        // Reset the game
         currentPlayer = 0
         changePhase(to: .Selection, animated: false)
         updateHint(animated: false)
     }
     
+    // Update the appearance of the hint view
     func setUpHintView() {
         hintView.layer.cornerRadius = 6
         hintView.layer.borderWidth = 1
@@ -95,6 +99,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         hintView.clipsToBounds = true
     }
     
+    // Update the appearance of the phase view
     func setUpPhaseView() {
         phaseView.layer.cornerRadius = 6
         phaseView.layer.borderWidth = 1
@@ -102,6 +107,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         phaseView.clipsToBounds = true
     }
     
+    // Update the appearance of the change phase view
     func setUpChangePhaseView() {
         changePhaseView.layer.cornerRadius = changePhaseView.frame.width / 2
         changePhaseView.layer.borderWidth = 1
@@ -111,6 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         changePhaseView.alpha = 0.0
     }
     
+    // Update the appearance of the player view
     func setUpPlayerView() {
         playerView.layer.cornerRadius = playerView.frame.width / 2
         playerView.layer.borderWidth = 1
@@ -118,6 +125,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         playerView.clipsToBounds = true
     }
     
+    // Update the appearance of the attack view
     func setUpAttackView() {
         attackView.clipsToBounds = true
         attackView.layer.cornerRadius = 12
@@ -129,7 +137,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
-        // Object Detection
+        // Pass the object scans to the session for object detection
         configuration.detectionObjects = ARReferenceObject.referenceObjects(inGroupNamed: "Figure", bundle: Bundle.main)!
         
         // Run the view's session
@@ -145,20 +153,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     // MARK: - Attack handling
     
+    // References to the two characters partaking in an attack
     var attackTarget: Character?
     var attackingNode: Character?
     
     func showAttackView() {
         guard let attacker = attackingNode, let defender = attackTarget else { return }
         
+        // Delegates executing the attack to the attack view
         attackView.setUp(attacker, defender, completion: {
             DispatchQueue.main.async {
+                // Hides the attack view after the attack is finished
                 UIView.animate(withDuration: 0.35, animations: {
                     self.attackViewHeight.constant = 0
                     self.view.layoutIfNeeded()
                 }, completion: {finished in
+                    // Resets the attack view
                     self.attackView.phase = .HitRoll
                     
+                    // If the attacked character's lost all of its lives, the game ends
+                    // Otherwise the next turn begins
                     if defender.wounds <= 0 {
                         self.hideHint()
                         self.hidePhase()
@@ -173,6 +187,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         })
         
+        // Shows the attack view
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.35, animations: {
                 self.attackViewHeight.constant = 300
@@ -184,27 +199,33 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Ignore touches in the character selection phase
         guard currentPhase != .Selection else { return }
         
+        // Ignore touches if there is a character to move already selected in the movement phase
         let shouldIgnore = currentPhase == .Movement && currentMovedNode != nil
         
         guard !shouldIgnore else { return }
         
+        // Get the first touch
         let touch = touches.first!
         if(touch.view != self.sceneView) {
             return
         }
 
+        // Use an AR hit test at the touch location to find the touched node
         let viewTouchLocation:CGPoint = touch.location(in: sceneView)
         guard let result = sceneView.hitTest(viewTouchLocation, options: nil).first else {
             return
         }
         
+        // Ignore result if touched node is not a character
         var char: Character?
         if !isCharacter(node: result.node, char: &char) {
             return
         }
 
+        // Show the movement range at the touched character
         if currentPhase == .Movement {
             let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
             if !isRightTurn {
@@ -217,6 +238,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
         
+        // If no attacker selected yet, set the attacker node and show its attacking range
         if attackingNode == nil {
             let isRightTurn = (char == firstCharacter && isPlayer1()) || (char == secondCharacter && isPlayer2())
             if !isRightTurn {
@@ -227,17 +249,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             attackingNode = char
             updateHint()
         } else {
+            // Try to set the touched node as the defending node
             let isRightTarget = (char == firstCharacter && isPlayer2()) || (char == secondCharacter && isPlayer1())
             if !isRightTarget {
                 return
             }
             
+            // If desired attack target is not in range, show hint and return function
             if char == nil || !isInRange(char!) {
                 shakeAnimation(for: hintView)
                 highlightMoveRadius()
                 return
             }
             
+            // Initiate the attack
             canSwitchPhase = false
             attackTarget = char
             hideHint()
@@ -245,6 +270,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    // Test if a give node is of type character in order to determine nodes in the scene as characters
     func isCharacter(node: SCNNode?, char: inout Character?) -> Bool {
         var node = node
         while !(node is Character) && node != nil {
@@ -263,17 +289,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var shouldRemoveFirstNodes = true
     
+    // Used in the selection phase to assign characters to players
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard currentPhase == .Selection else { return nil }
         
+        // TEMPORARY FIX FOR ADDITIONAL NODES
+        // ARKit creates and adds dummy nodes by itself for some reason which block all touches and therefore, have to be removed
         if (shouldRemoveFirstNodes) {
-            // TEMPORARY FIX FOR ADDITIONAL NODES
             sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
             sceneView.scene.rootNode.childNodes.last!.removeFromParentNode()
             
             shouldRemoveFirstNodes = false
         }
         
+        // Assign the character for the first player and move to the next player
         if firstCharacter == nil {
             firstCharacter = Character.create(from: anchor as? ARObjectAnchor)
             currentPlayer = 1
@@ -284,6 +313,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return firstCharacter
         }
         
+        // Assign the character for the second player and proceed to the actual game
         if secondCharacter == nil {
             secondCharacter = Character.create(from: anchor as? ARObjectAnchor)
             
@@ -294,9 +324,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return secondCharacter
         }
         
+        // Ignore anchors for any additonally detected object (which shouldn't happen anyway)
         return nil
     }
     
+    // In case of the movement phase and a node to move is set, compare the movement range to the new location
+    // to check if a character is still in range
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         if currentPhase == .Movement && node == currentMovedNode {
             checkMovementRadius()
@@ -314,23 +347,28 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let outOfRangeCircleColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.3)
     
     func addMovmentRadius() {
+        // Creates the circular SCNNode used to display the movement and attack ranges
         let circle = SCNCylinder(radius: 0.0, height: 0.001)
         circle.firstMaterial?.diffuse.contents = defaultCircleColor
         
         movementNode = SCNNode(geometry: circle)
         movementNode.position = SCNVector3Zero
         
+        // Adds the node to the scene so it's not attached to any other node
         sceneView.scene.rootNode.addChildNode(movementNode)
     }
     
     func showMoveRadius(at character: Character?) {
         guard let character = character else { return }
         
+        // Moves the node to the moved character's position
         movementNode.position = character.position
+        // Initializes the properties of the range
         currentMovementRadius = character.movementRadius
         currentMovedNode = character
         isInRange = true
         
+        // Animates the range to appear from the inside out
         let animation = CABasicAnimation(keyPath: "geometry.radius")
         animation.fromValue = 0.0
         animation.toValue = character.movementRadius
@@ -342,6 +380,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func hideMoveRadius() {
+        // Animates the range to be hidden again
         let animation = CABasicAnimation(keyPath: "geometry.radius")
         animation.fromValue = currentMovementRadius
         animation.toValue = 0.0
@@ -351,24 +390,29 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         animation.isRemovedOnCompletion = false
         movementNode.addAnimation(animation, forKey: "radius")
         
+        // Resets the properties of the range
         currentMovementRadius = 0.0
         currentMovedNode = nil
     }
     
+    // Used to show a color effect on the range if a node is out of range
     func highlightMoveRadius() {
         let oldColor = defaultCircleColor
         let newColor = outOfRangeCircleColor
         let duration: TimeInterval = 0.2
+        // Action for changing the color from default to out of range
         let act0 = SCNAction.customAction(duration: duration, action: { (node, elapsedTime) in
             let percentage = elapsedTime / CGFloat(duration)
             node.geometry?.firstMaterial?.diffuse.contents = self.getPercentageColor(from: oldColor, to: newColor, percentage: percentage)
         })
+        // Action for changing the color back to default
         let act1 = SCNAction.customAction(duration: duration, action: { (node, elapsedTime) in
             let percentage = elapsedTime / CGFloat(duration)
             node.geometry?.firstMaterial?.diffuse.contents = self.getPercentageColor(from: newColor, to: oldColor, percentage: percentage)
         })
         
         let act = SCNAction.sequence([act0, act1])
+        // Starts the animation
         movementNode.runAction(act)
     }
     
@@ -380,15 +424,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let x2 = movedNode.position.x
         let z2 = movedNode.position.z
         
+        // Uses the positions of character and movement range to calculate their distance (ignoring y differences)
         let distance = sqrtf(powf(x2-x1, 2) + powf(z2-z1, 2))
         
+        // Only proceeds if the state changed (i.e. was in range and now isn't or vice versa)
         if (isInRange && distance <= Float(currentMovementRadius)) || (!isInRange && distance > Float(currentMovementRadius)) {
             return
         }
         
+        // Updates the flags
         isInRange = !isInRange
         canSwitchPhase = isInRange
         
+        // Changes the color of the movement range to reflect its current status
         UIView.animate(withDuration: 0.35, animations: {
             self.movementNode.geometry?.firstMaterial?.diffuse.contents = self.isInRange
                 ? self.defaultCircleColor
@@ -396,6 +444,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         })
     }
     
+    // Similar to checkMovementRadius but used for attacks instead of movements
+    // Only returns if the two nodes are in range or not (no side effects)
     func isInRange(_ node: Character) -> Bool {
         guard let attackingNode = attackingNode else { return false }
         
@@ -413,16 +463,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var canSwitchPhase = false
     
+    // The action for the change phase button
     @IBAction func changePhase(_ sender: Any) {
+        // Checks if the current phase can be changed right now and if not
+        // indicates this by shaking the view
         guard canSwitchPhase else {
             shakeAnimation(for: changePhaseView)
             return
         }
         
+        // Hides potentially visible ranges
         hideMoveRadius()
         attackTarget = nil
         attackingNode = nil
         
+        // Proceeds to the next phase depending on the current one
         switch currentPhase {
         case .Movement?:
             changePhase(to: .Attack, animated: true)
@@ -435,6 +490,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func shakeAnimation(for view: UIView) {
+        // Creates a little shake animation for the given view
         let animation = CABasicAnimation(keyPath: "position")
         animation.duration = 0.1
         animation.repeatCount = 2
@@ -448,11 +504,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Game Info Helpers
     
     func changePhase(to phase: TurnPhase, animated: Bool = true) {
+        // If the phase change shouldn't be animated, the phase is just updated
         guard animated else {
             currentPhase = phase
             return
         }
         
+        // Animates the change of the hint view due to the phase change
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.7, animations: {
                 self.hintViewTop.constant = -self.phaseView.frame.height
@@ -475,11 +533,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func updateHint(animated: Bool = true) {
+        // Just updates the hint if it is not animated
         guard animated else {
             updateHintText()
             return
         }
         
+        // Animates the change of the hint view
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.7, animations: {
                 self.hintViewTop.constant = -self.phaseView.frame.height
@@ -497,6 +557,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func hideHint() {
+        // Hides the hint view
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.7, animations: {
                 self.hintViewTop.constant = -self.phaseView.frame.height
@@ -506,6 +567,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    // Hides the phase view
     func hidePhase() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.7, animations: {
@@ -515,6 +577,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    // Hides the change phase view
     func hideChangePhase() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.7, animations: {
@@ -524,6 +587,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    // Shows the victory view
     func showVictoryView() {
         victoryLabel.text = "Congratulations!\n\n\(isPlayer1() ? "Player 1" : "Player 2") wins the game!"
         
@@ -538,6 +602,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func updateHintText() {
         var hint: String!
         
+        // Updates the displayed hint based on the current phase
         if currentPhase == .Selection {
             hint = "Choose your character by looking at it"
         } else if currentPhase == .Movement {
@@ -554,6 +619,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func updatePhaseText() {
         var phase: String!
         
+        // Updates the phase text based on the current phase
         if currentPhase == .Selection {
             phase = "Selection"
         } else if currentPhase == .Movement {
@@ -568,12 +634,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func updatePlayerText() {
+        // Updates the player text to show whose turn it is
         DispatchQueue.main.async {
             self.playerLabel.text = self.getCurrentPlayerString()
         }
     }
 }
 extension ViewController {
+    // An extension function in order to get the proportionate color between two colors based on the percentage of the animation elapsed
     func getPercentageColor(from: UIColor, to: UIColor, percentage: CGFloat) -> UIColor {
         let fromComponents = from.cgColor.components!
         let toComponents = to.cgColor.components!
